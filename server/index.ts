@@ -5,10 +5,16 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { authRoute } from "./routes/auth";
-import { todoRoute } from "./routes/todo";
 config();
+
 // initalize application
 const app = new Hono();
+
+// routes handle
+const apiRoutes = app
+  .basePath("/api")
+  .route("/auth", authRoute)
+  .get("/hello", (c) => c.json({ msg: "hello world" }));
 
 // middlewares
 app.use(logger());
@@ -20,22 +26,19 @@ app.use(
     credentials: true,
   })
 );
+
+// assets
 app.get("*", serveStatic({ root: "dist" }));
 app.get("*", serveStatic({ path: "dist/index.html" }));
 
-// routes
-const apiRoutes = app
-  .basePath("/api")
-  .route("/auth", authRoute)
-  .route("/todos", todoRoute);
-
 // launch
 let port = Number(process.env.PORT);
-serve({
-  fetch: app.fetch,
-  port,
-});
-
-console.log(`Server is running on port http://localhost:${port} 🚀`);
+serve(
+  {
+    fetch: app.fetch,
+    port,
+  },
+  () => console.log(`launching... 🚀`)
+);
 
 export type ApiRoutes = typeof apiRoutes;
