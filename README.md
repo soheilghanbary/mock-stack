@@ -4,6 +4,7 @@
 - Vite 5
 - TailwindCSS
 - TanStack
+- RPC
 
 # Mock Stack (Backend)
 
