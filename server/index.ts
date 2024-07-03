@@ -14,7 +14,7 @@ const app = new Hono();
 const apiRoutes = app
   .basePath("/api")
   .route("/auth", authRoute)
-  .get("/hello", (c) => c.json({ msg: "hello world" }));
+  .get("/hello", (c) => c.json({ msg: "hello world", date: new Date() }));
 
 // middlewares
 app.use(logger());
@@ -24,7 +24,7 @@ app.use(
     origin: (origin) => origin,
     allowHeaders: ["Content-Type"],
     credentials: true,
-  })
+  }),
 );
 
 // assets
@@ -32,13 +32,13 @@ app.get("*", serveStatic({ root: "dist" }));
 app.get("*", serveStatic({ path: "dist/index.html" }));
 
 // launch
-let port = Number(process.env.PORT);
+const port = Number(process.env.PORT);
 serve(
   {
     fetch: app.fetch,
     port,
   },
-  () => console.log(`launching... 🚀`)
+  () => console.log("launching... 🚀"),
 );
 
 export type ApiRoutes = typeof apiRoutes;

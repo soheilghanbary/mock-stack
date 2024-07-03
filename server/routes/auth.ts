@@ -29,7 +29,7 @@ export const authRoute = new Hono()
       },
     });
     // create token
-    const secret = process.env.SECRET!;
+    const secret = String(process.env.SECRET);
     const payload = { id: user.id, name: user.name };
     const token = await sign(payload, secret);
     setCookie(c, "token", token);
@@ -44,7 +44,7 @@ export const authRoute = new Hono()
     const isPasswordCorrect = bcrypt.compareSync(body.password, exist.password);
     if (!isPasswordCorrect) return c.json({ msg: "رمز عبور اشتباهه!" }, 400);
     // create token
-    const secret = process.env.SECRET!;
+    const secret = String(process.env.SECRET);
     const payload = { id: exist.id, name: exist.name };
     const token = await sign(payload, secret);
     setCookie(c, "token", token);
@@ -54,7 +54,7 @@ export const authRoute = new Hono()
     const token = String(getCookie(c, "token"));
     const decoded = await decode(token);
     const user = await db.user.findFirst({
-      where: { id: decoded.payload.id! },
+      where: { id: String(decoded.payload.id) },
     });
     return c.json(user);
   })
@@ -68,7 +68,7 @@ export const authRoute = new Hono()
       data,
     });
     // create new token for after updated
-    const secret = process.env.SECRET!;
+    const secret = String(process.env.SECRET);
     const payload = { id: user.id, name: user.name };
     const token = await sign(payload, secret);
     setCookie(c, "token", token);
