@@ -2,7 +2,6 @@
 
 - React 19
 - Vite 5
-- Shadcn/UI
 - TailwindCSS
 - TanStack
 

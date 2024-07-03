@@ -25,5 +25,8 @@
     "prisma": "^5.16.1",
     "tsx": "^4.16.0",
     "typescript": "^5.5.3"
+  },
+  "prisma": {
+    "schema": "server/db/schema.prisma"
   }
 }
